@@ -1,13 +1,22 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import ExampleComponent from 'react-use-dux'
+import Header from './components/Header';
+import List from './components/List';
+import Footer from './components/Footer';
 
-export default class App extends Component {
-  render () {
+import 'todomvc-app-css/index.css';
+
+const App = (props) => {
+
     return (
-      <div>
-        <ExampleComponent text='Modern React component module' />
-      </div>
-    )
-  }
-}
+      <section className="todoapp">
+      
+          <Header />
+          <List />
+          <Footer />
+      
+      </section>
+    );
+};
+
+export default App;
