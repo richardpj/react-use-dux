@@ -3,7 +3,7 @@ import React from 'react';
 import { useReduxState, useReduxDispatch } from 'react-use-dux';
 import { footerActions, FILTER_TYPE } from '../dux/actions/todoActions';
 
-const Header = (props) => {
+const Footer = () => {
 
     const { removeCompletedTodos, filterTodos } = useReduxDispatch(footerActions);
     const todos = useReduxState(state => state.todos);
@@ -31,9 +31,9 @@ const Header = (props) => {
                 <li><a { ...createFilterProps(FILTER_TYPE.ACTIVE) }>Active</a></li>
                 <li><a { ...createFilterProps(FILTER_TYPE.COMPLETED) }>Completed</a></li>
             </ul>
-            { itemsLeft < todos.length ? <button className="clear-completed" onClick={ e => removeCompletedTodos(e) }>Clear Completed</button> : ''}
+            { itemsLeft < todos.length ? <button className="clear-completed" onClick={ removeCompletedTodos }>Clear Completed</button> : ''}
         </footer>
     );
 };
 
-export default Header;
+export default Footer;

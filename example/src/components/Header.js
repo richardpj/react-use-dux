@@ -1,14 +1,14 @@
 
-import React, {memo} from 'react';
+import React, { useCallback } from 'react';
 import { useReduxState, useReduxDispatch } from 'react-use-dux';
 import { headerActions } from '../dux/actions/todoActions';
 import { useKeypressHandler } from '../hooks/useKeyPressHandler';
 
-const Header = memo((props) => {
+const Header = () => {
 
     const { updateNewTodoText, addTodo } = useReduxDispatch(headerActions);
     const newTodoText = useReduxState(state => state.newTodoText);
-
+    const textChangeHandler = useCallback(e => updateNewTodoText(e.target.value), [updateNewTodoText]);
     const keypressHandler = useKeypressHandler(() => ({
         'Enter': addTodo,
     }));
@@ -16,10 +16,10 @@ const Header = memo((props) => {
     return (
             <header>
                 <h1>todos</h1>
-                <input type="text" placeholder="What needs to be done?" className="new-todo" value={newTodoText} onChange={ e => updateNewTodoText(e.target.value) } onKeyPress={ e => keypressHandler(e) } />
+                <input type="text" placeholder="What needs to be done?" className="new-todo" value={newTodoText} onChange={ textChangeHandler } onKeyPress={ keypressHandler } />
             </header>
     );
-});
+};
 
 Header.displayName = 'Header';
 

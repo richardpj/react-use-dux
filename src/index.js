@@ -15,12 +15,12 @@ const useRefState = initialValue => {
 
     useEffect(() => {
         stateRef.current = state;
-    });
+    }, [state]);
 
     return [state, setState, stateRef];
 };
 
-export const useReduxState = (selector = f => f) => {
+export const useReduxState = (selector = f => f, useShallowCompare = false) => {
 
     const store = useContext(ReduxContext);
     const [state, setState, stateRef] = useRefState(selector(store.getState()));
@@ -28,7 +28,7 @@ export const useReduxState = (selector = f => f) => {
     useEffect(() => {
         const unsubscribe = store.subscribe(() => {
             const newState = selector(store.getState());
-            if(!shallowEqual(stateRef.current, newState)) {
+            if(useShallowCompare ? !shallowEqual(stateRef.current, newState) : stateRef.current !== newState) {
                 setState(newState);
             }
         });
@@ -40,10 +40,11 @@ export const useReduxState = (selector = f => f) => {
 const isFunction = obj => !!(obj && obj.constructor && obj.call && obj.apply);
     
 const createGiveDispatch = dispatch => actionCreator => {
-    const giveActionCreatorDispatch = actionCreator => (...args) => dispatch(actionCreator(...args));
+    
     if(!actionCreator) {
         return dispatch;
     }
+    const giveActionCreatorDispatch = actionCreator => (...args) => dispatch(actionCreator(...args));
     if(isFunction(actionCreator)) {
         return giveActionCreatorDispatch(actionCreator);
     }

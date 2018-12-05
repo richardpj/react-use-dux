@@ -11,7 +11,7 @@ const lookupFilter = {
     [FILTER_TYPE.COMPLETED]: todo => todo.isCompleted,
 };
 
-const List = (props) => {
+const TodoList = () => {
 
     const { toggleAllTodos, stopEditingTodo } = useReduxDispatch(listActions);
 
@@ -23,7 +23,7 @@ const List = (props) => {
 
     const visibleTodos = todos.filter(lookupFilter[filter]);
 
-    const allChecked = todos.findIndex(item => !item.isCompleted) === -1; 
+    const allChecked = todos.length !== 0 && todos.findIndex(item => !item.isCompleted) === -1; 
 
     return (
         <section className="main">
@@ -36,4 +36,4 @@ const List = (props) => {
     );
 };
 
-export default List;
+export default TodoList;
