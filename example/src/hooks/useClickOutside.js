@@ -23,9 +23,11 @@ export const useClickOutside = (handler) => {
 
             document.addEventListener('click', documentClickHandler);
 
-            return () => document.removeEventListener('click', documentClickHandler);
+            return () => {
+                document.removeEventListener('click', documentClickHandler);
+            };
         }
-    }, [elementRef, handler ? handler.toString() : null]);
+    }, [handler ? handler.toString() : null]);
 
     return elementRef;
 };

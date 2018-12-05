@@ -32,6 +32,11 @@ export const headerActions = {
     addTodo,
 };
 
+export const listActions = {
+    toggleAllTodos,
+    stopEditingTodo,
+};
+
 export const itemActions = {
     editTodo,
     removeTodo,

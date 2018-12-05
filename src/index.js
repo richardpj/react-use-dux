@@ -4,6 +4,8 @@ import shallowEqual from 'shallowequal';
 
 const ReduxContext = createContext();
 
+ReduxContext.displayName = 'ReduxContext';
+
 export const ReduxContextProvider = ReduxContext.Provider;
 
 const useRefState = initialValue => {
