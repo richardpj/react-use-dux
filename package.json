@@ -1,6 +1,6 @@
 {
   "name": "react-use-dux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React bindings for Redux using the new React hooks proposal.",
   "author": "richardpj",
   "license": "MIT",
