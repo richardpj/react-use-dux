@@ -114,7 +114,7 @@ yarn start
 
 ## Thanks
 
-This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook/blob/master/README.md#usemappedstatemapstate) but with a few improvements.
+This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) but with a few improvements.
 
 ## License
 
