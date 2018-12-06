@@ -19,9 +19,9 @@
 
 ```bash
 # YARN
-yarn add react-redux-use-hooks
+yarn add react-use-dux
 # NPM
-npm install --save react-redux-use-hooks
+npm install --save react-use-dux
 ```
 ## Usage
 
@@ -104,7 +104,7 @@ To run the example project locally:
 
 ```bash
 # In one terminal, run `yarn start` in the root to rebuild the library itself
-cd ./redux-use-dux
+cd ./react-use-dux
 yarn start
 
 # In another terminal, run `yarn start` in the `example` folder
