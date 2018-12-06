@@ -12,7 +12,6 @@
   * [`useReduxState(stateSelector)`](#-usereduxstate-stateselector--)
   * [`useReduxDispatch(void or actionCreator or array or object)`](#-usereduxdispatch-void-or-actioncreator-or-array-or-object--)
 * [Example](#example)
-* [FAQ](#faq)
 * [Thanks](#thanks)
 * [License](#license)
 
@@ -115,7 +114,7 @@ yarn start
 
 ## Thanks
 
-This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook/blob/master/README.md#usemappedstatemapstate) but hopefully I've made some major improvements.
+This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook/blob/master/README.md#usemappedstatemapstate) but with a few improvements.
 
 ## License
 
