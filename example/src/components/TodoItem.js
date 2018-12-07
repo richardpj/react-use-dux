@@ -1,12 +1,12 @@
 
 import React, { forwardRef, memo } from 'react';
-import { useReduxDispatch } from 'react-use-dux';
+import { useReduxBindActionCreators } from 'react-use-dux';
 import { useKeypressHandler } from '../hooks/useKeyPressHandler';
 import { itemActions } from '../dux/actions/todoActions';
 
 const TodoItem = memo(forwardRef(({ id, text, isCompleted, editing }, ref) => {
 
-    const { editTodo, removeTodo, toggleTodo, updateTodoText, stopEditingTodo } = useReduxDispatch(itemActions);
+    const { editTodo, removeTodo, toggleTodo, updateTodoText, stopEditingTodo } = useReduxBindActionCreators(itemActions);
 
     const keypressHandler = useKeypressHandler(() => ({
         'Enter': stopEditingTodo,

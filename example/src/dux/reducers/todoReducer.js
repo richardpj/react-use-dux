@@ -5,7 +5,11 @@ import { TODO_UPDATE_NEW, TODO_ADD, TODO_REMOVE, TODO_EDIT, TODO_STOP_EDITING,
 
 const initialState = {
     newTodoText: '',
-    todos: [],
+    todos: [ 
+        { id:0, text:'Learn React hooks', isCompleted:true },
+        { id:1, text:'Use react-use-dux', isCompleted:false },
+        { id:2, text:'Enjoy the awesomeness', isCompleted:false },
+    ],
     editing: -1,
     filter: FILTER_TYPE.ALL,
 };

@@ -1,11 +1,11 @@
 
 import React from 'react';
-import { useReduxState, useReduxDispatch } from 'react-use-dux';
+import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
 import { footerActions, FILTER_TYPE } from '../dux/actions/todoActions';
 
 const Footer = () => {
 
-    const { removeCompletedTodos, filterTodos } = useReduxDispatch(footerActions);
+    const { removeCompletedTodos, filterTodos } = useReduxBindActionCreators(footerActions);
     const todos = useReduxState(state => state.todos);
     const filter = useReduxState(state => state.filter);
 

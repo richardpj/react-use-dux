@@ -1,12 +1,11 @@
 
-import { createContext, useContext, useState, useRef, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { bindActionCreators } from 'redux';
 import shallowEqual from 'shallowequal';
 
-const ReduxContext = createContext();
+export const ReduxContext = createContext();
 
 ReduxContext.displayName = 'ReduxContext';
-
-export const ReduxContextProvider = ReduxContext.Provider;
 
 const useRefState = initialValue => {
 
@@ -20,9 +19,10 @@ const useRefState = initialValue => {
     return [state, setState, stateRef];
 };
 
-export const useReduxState = (selector = f => f, useShallowCompare = false) => {
+export const useReduxState = (selector, memoArray = [], useShallowCompare = false) => {
 
     const store = useContext(ReduxContext);
+    const memoSelector = useCallback(selector, memoArray);
     const [state, setState, stateRef] = useRefState(selector(store.getState()));
     
     useEffect(() => {
@@ -33,35 +33,19 @@ export const useReduxState = (selector = f => f, useShallowCompare = false) => {
             }
         });
         return unsubscribe;
-    },[store, selector.toString()]);
+    },[store, memoSelector]);
     return state;
 };
 
-const isFunction = obj => !!(obj && obj.constructor && obj.call && obj.apply);
-    
-const createGiveDispatch = dispatch => actionCreator => {
-    
-    if(!actionCreator) {
-        return dispatch;
-    }
-    const giveActionCreatorDispatch = actionCreator => (...args) => dispatch(actionCreator(...args));
-    if(isFunction(actionCreator)) {
-        return giveActionCreatorDispatch(actionCreator);
-    }
-    if(Array.isArray(actionCreator)) {
-        return actionCreator.map(giveActionCreatorDispatch);
-    }
-    return Object.keys(actionCreator).reduce((result, key) => {
-        result[key] = giveActionCreatorDispatch(actionCreator[key]);
-        return result;
-    }, {});
-};
+export const useReduxDispatch = (actionCreator, memoArray = []) => {
+    const { dispatch } = useContext(ReduxContext);
 
-export const useReduxDispatch = (actionCreator) => {
+    return useMemo(() => actionCreator ? (...args) => dispatch(actionCreator(...args)) : dispatch, [dispatch, ...memoArray]);
+}
+
+export const useReduxBindActionCreators = (actionCreators, memoArray = []) => {
 
     const { dispatch } = useContext(ReduxContext);
     
-    const giveDispatch = useMemo(() => createGiveDispatch(dispatch), [dispatch]);
-    
-    return useMemo(() => giveDispatch(actionCreator), [giveDispatch, actionCreator]);
+    return useMemo(() => bindActionCreators(actionCreators, dispatch), [dispatch, ...memoArray]);
 }

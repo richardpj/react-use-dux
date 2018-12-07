@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ReduxContextProvider } from 'react-use-dux';
+import { ReduxContext } from 'react-use-dux';
 import { createStore, /*combineReducers, applyMiddleware,*/ compose } from 'redux';
 
 import 'todomvc-app-css/index.css';
@@ -14,7 +14,7 @@ var store = createStore(todoReducer, composeEnhancers());
 
 
 ReactDOM.render((
-    <ReduxContextProvider value={store}>
+    <ReduxContext.Provider value={store}>
         <App />
-    </ReduxContextProvider>
+    </ReduxContext.Provider>
     ), document.getElementById('root'));

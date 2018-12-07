@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useReduxState, useReduxDispatch } from 'react-use-dux';
+import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
 import { useClickOutside } from '../hooks/useClickOutside';
 import TodoItem from './TodoItem';
 import { FILTER_TYPE, listActions } from '../dux/actions/todoActions';
@@ -13,7 +13,7 @@ const lookupFilter = {
 
 const TodoList = () => {
 
-    const { toggleAllTodos, stopEditingTodo } = useReduxDispatch(listActions);
+    const { toggleAllTodos, stopEditingTodo } = useReduxBindActionCreators(listActions);
 
     const todos = useReduxState(state => state.todos);
     const editing = useReduxState(state => state.editing);
