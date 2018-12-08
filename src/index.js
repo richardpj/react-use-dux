@@ -24,11 +24,11 @@ export const useReduxState = (selector, memoArray = [], useShallowCompare = fals
 
     const store = useContext(ReduxContext);
     const memoSelector = useCallback(selector, memoArray);
-    const [state, setState, stateRef] = useRefState(selector(store.getState()));
+    const [state, setState, stateRef] = useRefState(memoSelector(store.getState()));
     
     useEffect(() => {
         const unsubscribe = store.subscribe(() => {
-            const newState = selector(store.getState());
+            const newState = memoSelector(store.getState());
             if(useShallowCompare ? !shallowEqual(stateRef.current, newState) : stateRef.current !== newState) {
                 setState(newState);
             }

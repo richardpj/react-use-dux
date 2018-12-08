@@ -8,9 +8,10 @@
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [`ReduxContextProvider`](#-reduxcontextprovider-)
-  * [`useReduxState(stateSelector)`](#-usereduxstate-stateselector--)
-  * [`useReduxDispatch(void or actionCreator or array or object)`](#-usereduxdispatch-void-or-actioncreator-or-array-or-object--)
+  * [ReduxContextProvider](#reduxcontextprovider)
+  * [useReduxState](#usereduxstate)
+  * [useReduxDispatch](#usereduxdispatch)
+  * [useReduxBindActionCreators](#usereduxdispatch)
 * [Example](#example)
 * [Thanks](#thanks)
 * [License](#license)
@@ -47,11 +48,13 @@ ReactDOM.render(
 );
 ```
 
-### `useReduxState(stateSelector = f => f, useShallowCompare = false)`
+### useReduxState
+
+#### `useReduxState(selector = f => f, memoArray = [], useShallowCompare = false)`
 
 Runs the given selector function to subscribe to a part of the redux state. Preferably call it for each part of the state to which you subscribe. You may subscribe to several portions of the state using a single selector (not recommended) but you must enable shallow comparison for this to work efficiently.
 
-**NOTE:** It is not necessary to extract or memoize your selector.
+**NOTE:** Your selector will be memoized using the provided memoArray argument. Ensure that all values captured by the selector function are included in the memoArray.
 
 It is also possible to subscribe to the entire state by passing void arguments but this is not recommended.
 
@@ -73,9 +76,36 @@ const MyComponent = (props) => {
 };
 ``` 
 
-### `useReduxDispatch(void or actionCreator or array or object)`
+### useReduxDispatch
 
-Either returns the dispatch method, gives an action creator dispatch, gives and array of action creators dispatch ,or an object (preferred) with action creator properties dispatch.
+#### `useReduxDispatch(void | dispatch => any, memoArray = [])`
+
+Either returns the dispatch method, or returns the result of executing the provided method.
+
+**NOTE:** The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function are included in the memoArray.
+
+```js
+import {useReduxDispatch} from 'react-use-dux';
+
+const MyComponent = (props) => {
+
+    const dispatch = useReduxDispatch();
+    //OR
+    const dispatcher = useReduxDispatch(dispatch => { /* create dispatcher */ });
+    
+    return (
+        {\* ...JSX... *\}
+    );
+};
+```
+
+### useReduxBindActionCreators
+
+#### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray = [])
+
+Either gives an action creator dispatch, or gives an object (preferred) with action creator properties dispatch.
+
+**NOTE:** The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function(s) are included in the memoArray.
 
 ```js
 import {useReduxDispatch} from 'react-use-dux';
@@ -83,11 +113,7 @@ import actions from './dux/actions';
 
 const MyComponent = (props) => {
 
-    const dispatch = useReduxDispatch();
-    //OR
     const doThing1 = useReduxDispatch(actions.doThing1);
-    //OR
-    const [ doThing1, doThing2 ] = useReduxDispatch(actions);
     //OR
     const { doThing1, doThing2 } = useReduxDispatch(actions);
 
@@ -114,7 +140,7 @@ yarn start
 
 ## Thanks
 
-This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) but with a few improvements.
+This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) but with a few improvements. Thanks also to [@ianobermiller](https://github.com/ianobermiller) for providing some great feedback leading to some great improvements in version 2.
 
 ## License
 
