@@ -68,7 +68,7 @@ const MyComponent = (props) => {
     const x = useReduxState(state => state.x);
     const y = useReduxState(state => state.y);
     //OR using shallow comparison
-    const { x, y } = useReduxState({ x, y } => ({ x, y }), true);
+    const { x, y } = useReduxState({ x, y } => ({ x, y }), [], true);
 
     return (
         {\* ...JSX... *\}
