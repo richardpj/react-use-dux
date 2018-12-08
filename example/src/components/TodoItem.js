@@ -14,7 +14,6 @@ const TodoItem = memo(forwardRef(({ id, text, isCompleted, editing, todoEditText
 
     useEffect(() => {
         if(editing) {
-            console.log('focus!');
             ref.current.focus();
         }
     },[editing]);

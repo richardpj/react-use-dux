@@ -7,7 +7,6 @@ export const useClickOutside = (handler, attached = true, memoArray = []) => {
 
     useEffect(() => {
         if(attached) {
-            console.log('attaching');
             const documentClickHandler = e => {
 
                 let targetElement = e.target;
@@ -25,7 +24,6 @@ export const useClickOutside = (handler, attached = true, memoArray = []) => {
             document.addEventListener('click', documentClickHandler);
 
             return () => {
-                console.log('detaching');
                 document.removeEventListener('click', documentClickHandler);
             };
         }
