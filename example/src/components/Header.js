@@ -8,7 +8,6 @@ const Header = () => {
 
     const { updateNewTodoText, addTodo } = useReduxBindActionCreators(headerActions);
     const newTodoText = useReduxState(state => state.newTodoText);
-    const todos = useReduxState(state => state.todos);
     const textChangeHandler = useCallback(e => updateNewTodoText(e.target.value), [updateNewTodoText]);
     const keypressHandler = useKeypressHandler({
         'Enter': addTodo,
@@ -16,7 +15,7 @@ const Header = () => {
 
     return (
             <header>
-                <h1>{todos.length} - todos</h1>
+                <h1>todos</h1>
                 <input type="text" placeholder="What needs to be done?" className="new-todo" value={newTodoText} onChange={ textChangeHandler } onKeyPress={ keypressHandler } />
             </header>
     );
