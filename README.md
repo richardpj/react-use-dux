@@ -11,7 +11,7 @@
   * [ReduxContextProvider](#reduxcontextprovider)
   * [useReduxState](#usereduxstate)
   * [useReduxDispatch](#usereduxdispatch)
-  * [useReduxBindActionCreators](#usereduxdispatch)
+  * [useReduxBindActionCreators](#usereduxbindactioncreators)
 * [Example](#example)
 * [Thanks](#thanks)
 * [License](#license)
@@ -36,14 +36,14 @@ Before you can use the hook, you must provide your Redux store via `ReduxContext
 
 ```jsx
 import {createStore} from 'redux';
-import {ReduxContextProvider} from 'react-use-dux';
+import {ReduxContext} from 'react-use-dux';
 
 const store = createStore(/*...*/);
 
 ReactDOM.render(
-  <ReduxContextProvider value={store}>
+  <ReduxContext.Provider value={store}>
     <App />
-  </ReduxContextProvider>,
+  </ReduxContext.Provider>,
   document.getElementById('root'),
 );
 ```
