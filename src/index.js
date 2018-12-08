@@ -1,5 +1,6 @@
 
 import { createContext, useContext, useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { bindActionCreators } from 'redux';
 import shallowEqual from 'shallowequal';
 
@@ -40,13 +41,13 @@ export const useReduxState = (selector, memoArray = [], useShallowCompare = fals
 export const useReduxDispatch = (fn, memoArray = []) => {
     
     const { dispatch } = useContext(ReduxContext);
-
-    return useMemo(() => actionCreator ? fn(dispatch) : dispatch, [dispatch, ...memoArray]);
+    const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
+    return useMemo(() => actionCreator ? fn(batchedDispatch) : batchedDispatch, [dispatch, ...memoArray]);
 };
 
 export const useReduxBindActionCreators = (actionCreators, memoArray = []) => {
 
     const { dispatch } = useContext(ReduxContext);
-    
-    return useMemo(() => bindActionCreators(actionCreators, dispatch), [dispatch, ...memoArray]);
+    const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
+    return useMemo(() => bindActionCreators(actionCreators, batchedDispatch), [dispatch, ...memoArray]);
 };

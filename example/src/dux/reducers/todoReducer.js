@@ -5,6 +5,7 @@ import { TODO_UPDATE_NEW, TODO_ADD, TODO_REMOVE, TODO_EDIT, TODO_STOP_EDITING,
 
 const initialState = {
     newTodoText: '',
+    editTodoText: '',
     todos: [ 
         { id:0, text:'Learn React hooks', isCompleted:true },
         { id:1, text:'Use react-use-dux', isCompleted:false },
@@ -58,27 +59,33 @@ const reducerMap = {
         }
         return {
             ...state,
+            todoEditText: state.todos[itemIndex].text,
             editing: action.id,
         };
     },
-    [TODO_STOP_EDITING]: (state, action) => ({ ...state, editing: -1 }),
-    [TODO_UPDATE_TEXT]: (state, action) => {
-        let todos = [...state.todos];
-        let itemIndex = todos.findIndex(item => item.id === state.editing);
+    [TODO_STOP_EDITING]: (state, action) => {
+        let itemIndex = state.todos.findIndex(item => item.id === state.editing);
         if(itemIndex === -1) {
             console.log('Should not happen!');
             return state;
         }
-        let item = todos[itemIndex];
-        todos.splice(itemIndex, 1, {
-            ...item,
-            text: action.text,
-        });
+        let todos = [...state.todos];
+        let editedItem = {
+            ...todos[itemIndex],
+            text: state.todoEditText,
+        } 
+        todos.splice(itemIndex, 1, editedItem)
         return {
             ...state,
             todos,
+            todoEditText: '',
+            editing: -1,
         };
     },
+    [TODO_UPDATE_TEXT]: (state, action) => ({
+        ...state,
+        todoEditText: action.text,
+    }),
     [TODO_TOGGLE_COMPLETE]: (state, action) => {
         let todos = [...state.todos];
         let itemIndex = todos.findIndex(item => item.id === action.id);

@@ -18,6 +18,7 @@ const TodoList = () => {
     const todos = useReduxState(state => state.todos);
     const editing = useReduxState(state => state.editing);
     const filter = useReduxState(state => state.filter);
+    const todoEditText = useReduxState(state => state.todoEditText);
     
     const textBoxRef = useClickOutside(stopEditingTodo, editing !== -1);
 
@@ -30,7 +31,7 @@ const TodoList = () => {
             <input id="toggle-all" name="toggle-all" className="toggle-all" checked={allChecked} type="checkbox" onChange={toggleAllTodos} />
             <label htmlFor="toggle-all">All</label>
             <ul className="todo-list">
-                {visibleTodos.map(todo => <TodoItem key={todo.id} {...todo} { ...todo.id === editing ? { editing: true, ref: textBoxRef } : { editing: false } } />)}
+                {visibleTodos.map(todo => <TodoItem key={todo.id} {...todo} { ...todo.id === editing ? { editing: true, ref: textBoxRef, todoEditText } : { editing: false } } />)}
             </ul>
         </section>
     );
