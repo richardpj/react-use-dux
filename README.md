@@ -101,7 +101,7 @@ const MyComponent = (props) => {
 
 ### useReduxBindActionCreators
 
-#### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray = [])
+#### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray = [])`
 
 Either gives an action creator dispatch, or gives an object (preferred) with action creator properties dispatch.
 
