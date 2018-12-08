@@ -1,14 +1,13 @@
 
 import { useMemo } from 'react';
 
-export const useKeypressHandler = (optionsFn) => {
+export const useKeypressHandler = (options, memoArray = []) => {
     
     return useMemo(() => {
-        const options = optionsFn();
         return e => {
             if(options.hasOwnProperty(e.key)) {
                 options[e.key](e);
             }
         };
-    }, [optionsFn.toString()]);
+    }, memoArray);
 }

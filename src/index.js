@@ -37,15 +37,16 @@ export const useReduxState = (selector, memoArray = [], useShallowCompare = fals
     return state;
 };
 
-export const useReduxDispatch = (actionCreator, memoArray = []) => {
+export const useReduxDispatch = (fn, memoArray = []) => {
+    
     const { dispatch } = useContext(ReduxContext);
 
-    return useMemo(() => actionCreator ? (...args) => dispatch(actionCreator(...args)) : dispatch, [dispatch, ...memoArray]);
-}
+    return useMemo(() => actionCreator ? fn(dispatch) : dispatch, [dispatch, ...memoArray]);
+};
 
 export const useReduxBindActionCreators = (actionCreators, memoArray = []) => {
 
     const { dispatch } = useContext(ReduxContext);
     
     return useMemo(() => bindActionCreators(actionCreators, dispatch), [dispatch, ...memoArray]);
-}
+};

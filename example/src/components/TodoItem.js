@@ -8,9 +8,9 @@ const TodoItem = memo(forwardRef(({ id, text, isCompleted, editing }, ref) => {
 
     const { editTodo, removeTodo, toggleTodo, updateTodoText, stopEditingTodo } = useReduxBindActionCreators(itemActions);
 
-    const keypressHandler = useKeypressHandler(() => ({
+    const keypressHandler = useKeypressHandler({
         'Enter': stopEditingTodo,
-    }));
+    });
 
     return (
         <li {...editing ? { className: 'editing' } : {}}>
@@ -23,7 +23,7 @@ const TodoItem = memo(forwardRef(({ id, text, isCompleted, editing }, ref) => {
         </li>
     );
 }));
-
+//TODO: Separate editText state.
 TodoItem.displayName = 'TodoItem';
 
 export default TodoItem;

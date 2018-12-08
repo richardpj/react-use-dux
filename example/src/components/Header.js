@@ -10,9 +10,9 @@ const Header = () => {
     const newTodoText = useReduxState(state => state.newTodoText);
     const todos = useReduxState(state => state.todos);
     const textChangeHandler = useCallback(e => updateNewTodoText(e.target.value), [updateNewTodoText]);
-    const keypressHandler = useKeypressHandler(() => ({
+    const keypressHandler = useKeypressHandler({
         'Enter': addTodo,
-    }));
+    });
 
     return (
             <header>

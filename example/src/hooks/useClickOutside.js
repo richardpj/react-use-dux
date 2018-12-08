@@ -1,12 +1,12 @@
 
 import { useRef, useEffect } from 'react';
 
-export const useClickOutside = (handler) => {
+export const useClickOutside = (handler, attached = true, memoArray = []) => {
     
     let elementRef = useRef();
 
     useEffect(() => {
-        if(handler) {
+        if(attached) {
             const documentClickHandler = e => {
 
                 let targetElement = e.target;
@@ -18,7 +18,7 @@ export const useClickOutside = (handler) => {
                     targetElement = targetElement.parentNode;
                 } while (targetElement);
 
-                handler();
+                handler(e);
             };
 
             document.addEventListener('click', documentClickHandler);
@@ -27,7 +27,7 @@ export const useClickOutside = (handler) => {
                 document.removeEventListener('click', documentClickHandler);
             };
         }
-    }, [handler ? handler.toString() : null]);
+    }, [attached, ...memoArray]);
 
     return elementRef;
 };

@@ -19,7 +19,7 @@ const TodoList = () => {
     const editing = useReduxState(state => state.editing);
     const filter = useReduxState(state => state.filter);
     
-    const textBoxRef = useClickOutside(editing !== -1 ? stopEditingTodo : null);
+    const textBoxRef = useClickOutside(stopEditingTodo, editing !== -1);
 
     const visibleTodos = todos.filter(lookupFilter[filter]);
 
