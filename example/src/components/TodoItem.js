@@ -19,8 +19,9 @@ const TodoItem = memo(({ id }) => {
     });
 
     const updateTodoTextCb = useCallback(e => updateTodoText(e.target.value), [updateTodoText]);
-    const toggleTodoCb = useCallback(e => toggleTodo(id), [id, toggleTodo]);
-    const editTodoCb = useCallback(e => editTodo(id), [id, editTodo]);
+    const toggleTodoCb = useCallback(() => toggleTodo(id), [id, toggleTodo]);
+    const editTodoCb = useCallback(() => editTodo(id), [id, editTodo]);
+    const removeTodoCb = useCallback(() => removeTodo(id), [id, removeTodo]);
 
     useEffect(() => {
         if(editing) {
@@ -33,7 +34,7 @@ const TodoItem = memo(({ id }) => {
             <div className="view">
                 <input type="checkbox" className="toggle" checked={isCompleted} onChange={ toggleTodoCb } />
                 <label onDoubleClick={editTodoCb}>{text}</label>
-                <button className="destroy" onClick={() => removeTodo(id)}></button>
+                <button className="destroy" onClick={ removeTodoCb }></button>
             </div>
             <input type="text" className="edit" ref={textBoxRef} value={ text } onChange={ updateTodoTextCb } onKeyPress={ keypressHandler } />
         </li>
