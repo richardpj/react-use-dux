@@ -7,8 +7,8 @@ const Footer = () => {
 
     const { removeCompletedTodos, filterTodos } = useReduxBindActionCreators(footerActions);
     const filter = useReduxState(state => state.filter);
-    const todoCount = useReduxState(state => state.todos.length);
     const activeTodoCount = useReduxState(state => state.todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0));
+    const showClearCompleted = useReduxState(state => state.todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0) < state.todos.length);
 
     const itemsText = activeTodoCount === 0 ?
         '' :
@@ -36,7 +36,7 @@ const Footer = () => {
                 <li><a { ...activeFilterProps }>Active</a></li>
                 <li><a { ...completedFilterProps }>Completed</a></li>
             </ul>
-            { activeTodoCount < todoCount ? <button className="clear-completed" onClick={ removeCompletedTodos }>Clear Completed</button> : ''}
+            { showClearCompleted ? <button className="clear-completed" onClick={ removeCompletedTodos }>Clear Completed</button> : ''}
         </footer>
     );
 };

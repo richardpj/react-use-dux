@@ -44,6 +44,7 @@ const reducerMap = {
             console.log('Should not happen!');
             return state;
         }
+        todos.splice(itemIndex, 1);
         return {
             ...state,
             todos,
