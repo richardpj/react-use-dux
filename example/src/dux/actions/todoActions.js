@@ -34,7 +34,6 @@ export const headerActions = {
 
 export const listActions = {
     toggleAllTodos,
-    stopEditingTodo,
 };
 
 export const itemActions = {

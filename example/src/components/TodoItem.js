@@ -1,35 +1,45 @@
 
-import React, { forwardRef, memo, useEffect } from 'react';
-import { useReduxBindActionCreators } from 'react-use-dux';
+import React, { memo, useEffect, useCallback } from 'react';
+import { useReduxBindActionCreators, useReduxState } from 'react-use-dux';
 import { useKeypressHandler } from '../hooks/useKeyPressHandler';
+import { useClickOutside } from '../hooks/useClickOutside';
 import { itemActions } from '../dux/actions/todoActions';
 
-const TodoItem = memo(forwardRef(({ id, text, isCompleted, editing, todoEditText }, ref) => {
+const TodoItem = memo(({ id }) => {
 
     const { editTodo, removeTodo, toggleTodo, updateTodoText, stopEditingTodo } = useReduxBindActionCreators(itemActions);
+
+    const { text, isCompleted } = useReduxState(state => state.todos[state.todos.findIndex(item => item.id === id)], [id]);
+    const editing = useReduxState(state => state.editing === id, [id]);
+
+    const textBoxRef = useClickOutside(stopEditingTodo, editing);
 
     const keypressHandler = useKeypressHandler({
         'Enter': stopEditingTodo,
     });
 
+    const updateTodoTextCb = useCallback(e => updateTodoText(e.target.value), [updateTodoText]);
+    const toggleTodoCb = useCallback(e => toggleTodo(id), [id, toggleTodo]);
+    const editTodoCb = useCallback(e => editTodo(id), [id, editTodo]);
+
     useEffect(() => {
         if(editing) {
-            ref.current.focus();
+            textBoxRef.current.focus();
         }
     },[editing]);
 
     return (
         <li {...editing ? { className: 'editing' } : {}}>
             <div className="view">
-                <input type="checkbox" className="toggle" checked={isCompleted} onChange={e => toggleTodo(id)} />
-                <label onDoubleClick={() => editTodo(id)}>{text}</label>
+                <input type="checkbox" className="toggle" checked={isCompleted} onChange={ toggleTodoCb } />
+                <label onDoubleClick={editTodoCb}>{text}</label>
                 <button className="destroy" onClick={() => removeTodo(id)}></button>
             </div>
-            <input type="text" className="edit" { ...editing ? { ref: ref } : {} } value={editing? todoEditText : '' } onChange={e => updateTodoText(e.target.value)} onKeyPress={ keypressHandler } />
+            <input type="text" className="edit" ref={textBoxRef} value={ text } onChange={ updateTodoTextCb } onKeyPress={ keypressHandler } />
         </li>
     );
-}));
-//TODO: Separate editText state.
+});
+
 TodoItem.displayName = 'TodoItem';
 
 export default TodoItem;

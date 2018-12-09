@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
-import { useClickOutside } from '../hooks/useClickOutside';
-import TodoItem from './TodoItem';
 import { FILTER_TYPE, listActions } from '../dux/actions/todoActions';
+import TodoItem from './TodoItem';
 
 const lookupFilter = {
     [FILTER_TYPE.ALL]: () => true,
@@ -13,25 +12,19 @@ const lookupFilter = {
 
 const TodoList = () => {
 
-    const { toggleAllTodos, stopEditingTodo } = useReduxBindActionCreators(listActions);
+    const { toggleAllTodos } = useReduxBindActionCreators(listActions);
 
-    const todos = useReduxState(state => state.todos);
-    const editing = useReduxState(state => state.editing);
-    const filter = useReduxState(state => state.filter);
-    const todoEditText = useReduxState(state => state.todoEditText);
-    
-    const textBoxRef = useClickOutside(stopEditingTodo, editing !== -1);
-
-    const visibleTodos = todos.filter(lookupFilter[filter]);
-
-    const allChecked = todos.length !== 0 && todos.findIndex(item => !item.isCompleted) === -1; 
+    const visibleTodoIds = useReduxState(state => {
+        return state.todos.filter(lookupFilter[state.filter]).map(todo => todo.id)
+    }, [], true);
+    const allChecked = useReduxState(state => state.todos.length !== 0 && state.todos.findIndex(item => !item.isCompleted) === -1); 
 
     return (
         <section className="main">
             <input id="toggle-all" name="toggle-all" className="toggle-all" checked={allChecked} type="checkbox" onChange={toggleAllTodos} />
             <label htmlFor="toggle-all">All</label>
             <ul className="todo-list">
-                {visibleTodos.map(todo => <TodoItem key={todo.id} {...todo} { ...todo.id === editing ? { editing: true, ref: textBoxRef, todoEditText } : { editing: false } } />)}
+                {visibleTodoIds.map(todoId => <TodoItem key={todoId} id={todoId} />)}
             </ul>
         </section>
     );

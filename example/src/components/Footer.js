@@ -1,37 +1,42 @@
 
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
 import { footerActions, FILTER_TYPE } from '../dux/actions/todoActions';
 
 const Footer = () => {
 
     const { removeCompletedTodos, filterTodos } = useReduxBindActionCreators(footerActions);
-    const todos = useReduxState(state => state.todos);
     const filter = useReduxState(state => state.filter);
+    const todoCount = useReduxState(state => state.todos.length);
+    const activeTodoCount = useReduxState(state => state.todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0));
 
-    const itemsLeft = todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0);
-
-    const itemsText = itemsLeft === 0 ?
+    const itemsText = activeTodoCount === 0 ?
         '' :
-        itemsLeft > 1 ?
-        `${itemsLeft} items left` :
-        `${itemsLeft} item left`;
+        activeTodoCount > 1 ?
+        `${activeTodoCount} items left` :
+        `${activeTodoCount} item left`;
 
-    const createFilterProps = filterType => {
+    const createFilterProps = useCallback(filterType => {
         return filterType !== filter ?
             { onClick: e => filterTodos(filterType) } :
             { className: 'selected' };
-    };
+    }, [filter]);
+
+    const { allFilterProps, activeFilterProps, completedFilterProps } = useMemo(() => ({
+        allFilterProps: createFilterProps(FILTER_TYPE.ALL),
+        activeFilterProps: createFilterProps(FILTER_TYPE.ACTIVE),
+        completedFilterProps: createFilterProps(FILTER_TYPE.COMPLETED),
+    }), [createFilterProps]);
 
     return (
         <footer className="footer">
             <span className="todo-count">{itemsText}</span>
             <ul className="filters">
-                <li><a { ...createFilterProps(FILTER_TYPE.ALL) }>All</a></li>
-                <li><a { ...createFilterProps(FILTER_TYPE.ACTIVE) }>Active</a></li>
-                <li><a { ...createFilterProps(FILTER_TYPE.COMPLETED) }>Completed</a></li>
+                <li><a { ...allFilterProps }>All</a></li>
+                <li><a { ...activeFilterProps }>Active</a></li>
+                <li><a { ...completedFilterProps }>Completed</a></li>
             </ul>
-            { itemsLeft < todos.length ? <button className="clear-completed" onClick={ removeCompletedTodos }>Clear Completed</button> : ''}
+            { activeTodoCount < todoCount ? <button className="clear-completed" onClick={ removeCompletedTodos }>Clear Completed</button> : ''}
         </footer>
     );
 };
