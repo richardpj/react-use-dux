@@ -8,7 +8,7 @@
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [ReduxContextProvider](#reduxcontextprovider)
+  * [ReduxContext](#reduxcontext)
   * [useReduxState](#usereduxstate)
   * [useReduxDispatch](#usereduxdispatch)
   * [useReduxBindActionCreators](#usereduxbindactioncreators)
@@ -28,11 +28,11 @@ npm install --save react-use-dux
 
 NOTE: React hooks currently require react and react-dom version 16.7.0-alpha.0 or higher.
 
-In order to use the hooks, your Redux store must be in available in the React context from `ReduxContextProvider`.
+In order to use the hooks, your Redux store must be available in the React context from `ReduxContext.Provider`.
 
-### `ReduxContextProvider`
+### ReduxContext
 
-Before you can use the hook, you must provide your Redux store via `ReduxContextProvider`:
+Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`:
 
 ```jsx
 import {createStore} from 'redux';
@@ -54,11 +54,11 @@ ReactDOM.render(
 
 Runs the given selector function to subscribe to a part of the redux state. Preferably call it for each part of the state to which you subscribe. You may subscribe to several portions of the state using a single selector (not recommended) but you must enable shallow comparison for this to work efficiently.
 
-**NOTE:** Your selector will be memoized using the provided memoArray argument. Ensure that all values captured by the selector function are included in the memoArray.
+Your selector will be memoized using the provided memoArray argument. Ensure that all values captured by the selector function are included in the memoArray.
 
 It is also possible to subscribe to the entire state by passing void arguments but this is not recommended.
 
-**DO NOT** create deeply nested state subscriptions as this will cause the state subscription to fire for every action as no stronger/deeper form of comparison is supported for performance reasons.
+Avoid creating deeply nested state subscriptions as this will cause the state subscription to fire for every action as no stronger/deeper form of comparison is supported for performance reasons.
 
 ```js
 import {useReduxState} from 'react-use-dux';
@@ -75,6 +75,15 @@ const MyComponent = (props) => {
     );
 };
 ``` 
+It is an antipattern to capture subscribed state values in the selectors of subsequent subscriptions and will cause anomalous behaviour. If you must do it then use a ref but rather avoid it entirely.
+
+```js
+//Avoid...
+const filter = useReduxState(state => state.filter);
+const filteredTodos = useReduxState(state => state.todos.filter(filter), [filter]); //fail sauce.
+//Rather...
+const filteredTodos = useReduxState(state => state.todos.filter(state.filter));
+```
 
 ### useReduxDispatch
 
@@ -82,7 +91,7 @@ const MyComponent = (props) => {
 
 Either returns the dispatch method, or returns the result of executing the provided method.
 
-**NOTE:** The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function are included in the memoArray.
+The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function are included in the memoArray.
 
 ```js
 import {useReduxDispatch} from 'react-use-dux';
