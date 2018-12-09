@@ -30,15 +30,15 @@ NOTE: React hooks currently require react and react-dom version 16.7.0-alpha.0 o
 
 In order to use the hooks, your Redux store must be available in the React context from `ReduxContext.Provider`.
 
-### ReduxContext
+### ReduxContext and useReduxBatchUpdateMiddleware
 
-Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`:
+Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`. Additionally it is recommended that you apply the supplied `useReduxBatchUpdateMiddleware` in order to guarantee that actions that may cause cascading re-renders will be batched into one render. This is due to the way that `react-use-dux` uses the built in state hook under the hood. It is envisioned that this should not cause cascading updates in the future so hopefully this feature can be removed in a later release.
 
 ```jsx
-import {createStore} from 'redux';
-import {ReduxContext} from 'react-use-dux';
+import {createStore, compose, applyMiddleware} from 'redux';
+import {ReduxContext, useReduxBatchUpdateMiddleware} from 'react-use-dux';
 
-const store = createStore(/*...*/);
+const store = createStore(/*...*/,compose(applyMiddleware(/*...*/, useReduxBatchUpdateMiddleware)));
 
 ReactDOM.render(
   <ReduxContext.Provider value={store}>

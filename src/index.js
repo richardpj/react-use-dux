@@ -8,6 +8,12 @@ export const ReduxContext = createContext();
 
 ReduxContext.displayName = 'ReduxContext';
 
+export const useReduxBatchUpdateMiddleware = ({dispatch, getState}) => next => action => {
+    let retVal;
+    batchedUpdates(() => retVal = next(action));
+    return retVal;
+}
+
 const useRefState = initialValue => {
 
     const [state, setState] = useState(initialValue);
@@ -38,16 +44,16 @@ export const useReduxState = (selector, memoArray = [], useShallowCompare = fals
     return state;
 };
 
+//const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
+
 export const useReduxDispatch = (fn, memoArray = []) => {
     
     const { dispatch } = useContext(ReduxContext);
-    const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
-    return useMemo(() => actionCreator ? fn(batchedDispatch) : batchedDispatch, [dispatch, ...memoArray]);
+    return useMemo(() => fn ? fn(dispatch) : dispatch, [dispatch, ...memoArray]);
 };
 
 export const useReduxBindActionCreators = (actionCreators, memoArray = []) => {
 
-    const { dispatch } = useContext(ReduxContext);
-    const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
-    return useMemo(() => bindActionCreators(actionCreators, batchedDispatch), [dispatch, ...memoArray]);
+    const { dispatch } = useContext(ReduxContext);    
+    return useMemo(() => bindActionCreators(actionCreators, dispatch), [dispatch, ...memoArray]);
 };
