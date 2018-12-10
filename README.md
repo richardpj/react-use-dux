@@ -33,7 +33,7 @@ In order to use the hooks, your Redux store must be available in the React conte
 
 ### ReduxContext and reduxBatchUpdateMiddleware
 
-Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`. Additionally it is recommended that you apply the supplied `reduxBatchUpdateMiddleware` in order to guarantee that actions that may cause cascading re-renders will be batched into one render. This is due to the way that `react-use-dux` uses the built in state hook under the hood. It is envisioned that this react will prevent these setState cascading updates in the future so hopefully this feature can be removed in a later release.
+Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`. Additionally it is recommended that you apply the supplied `reduxBatchUpdateMiddleware` to your store in order to guarantee that actions that may cause cascading re-renders will be batched into one render. This is due to the way that `react-use-dux` uses the built in state hook under the hood. It is envisioned that react will prevent these setState cascading updates in the future so hopefully this feature can be removed in a later release.
 
 ```jsx
 import {createStore, compose, applyMiddleware} from 'redux';
@@ -60,7 +60,6 @@ Your selector will be memoized using the provided memoArray argument. Ensure tha
 It is also possible to subscribe to the entire state by passing void arguments but this is not recommended.
 
 Avoid creating deeply nested state subscriptions as this will cause the state subscription to fire for every action as no stronger/deeper form of comparison is supported for performance reasons.
-
 ```js
 import {useReduxState} from 'react-use-dux';
 
@@ -77,7 +76,6 @@ const MyComponent = (props) => {
 };
 ``` 
 Avoid capture of subscribed state values in the selectors of subsequent subscriptions as this will cause anomalous behaviour.
-
 ```js
 //Avoid...
 const filter = useReduxState(state => state.filter);
@@ -94,7 +92,6 @@ If you really want to reuse selectors think about adopting a library like [resel
 Either returns the dispatch method, or returns the result of executing the provided method.
 
 The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function are included in the memoArray.
-
 ```js
 import {useReduxDispatch} from 'react-use-dux';
 
@@ -109,7 +106,6 @@ const MyComponent = (props) => {
     );
 };
 ```
-
 ### useReduxBindActionCreators
 
 #### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray = [])`
@@ -117,7 +113,6 @@ const MyComponent = (props) => {
 Either gives an action creator dispatch, or gives an object (preferred) with action creator properties dispatch.
 
 The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function(s) are included in the memoArray.
-
 ```js
 import {useReduxDispatch} from 'react-use-dux';
 import actions from './dux/actions';
@@ -134,7 +129,6 @@ const MyComponent = (props) => {
     );
 };
 ```
-
 ## Example
 
 To run the example project locally:
@@ -152,7 +146,7 @@ yarn start
 
 This API has been evolving rapidly as I've experimented with it and measured the performance and usability of various design choices. It is more stable now and you can adopt it (please no prod deployment until the react team releases hooks!) without fear of breaking changes for now.
 
-That said if you feel strongly about geting it changed you're welcome to raise an issue or pull request.
+That said if you feel strongly about geting it changed (or heaven forfen you've found a bug) you're welcome to raise an [issue](https://github.com/richardpj/react-use-dux/issues) or [pull request](https://github.com/richardpj/react-use-dux/pulls).
 
 ## Thanks
 
