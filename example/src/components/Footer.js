@@ -2,13 +2,14 @@
 import React, { useCallback, useMemo } from 'react';
 import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
 import { footerActions, FILTER_TYPE } from '../dux/actions/todoActions';
+import { selectFilter, selectActiveTodoCount, selectShowClearCompleted } from '../dux/selectors/todoSelectors';
 
 const Footer = () => {
 
     const { removeCompletedTodos, filterTodos } = useReduxBindActionCreators(footerActions);
-    const filter = useReduxState(state => state.filter);
-    const activeTodoCount = useReduxState(state => state.todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0));
-    const showClearCompleted = useReduxState(state => state.todos.reduce((prev, next) => !next.isCompleted ? prev + 1 : prev, 0) < state.todos.length);
+    const filter = useReduxState(selectFilter);
+    const activeTodoCount = useReduxState(selectActiveTodoCount);
+    const showClearCompleted = useReduxState(selectShowClearCompleted);
 
     const itemsText = activeTodoCount === 0 ?
         '' :

@@ -1,23 +1,16 @@
 
 import React from 'react';
 import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
-import { FILTER_TYPE, listActions } from '../dux/actions/todoActions';
+import { listActions } from '../dux/actions/todoActions';
 import TodoItem from './TodoItem';
-
-const lookupFilter = {
-    [FILTER_TYPE.ALL]: () => true,
-    [FILTER_TYPE.ACTIVE]: todo => !todo.isCompleted,
-    [FILTER_TYPE.COMPLETED]: todo => todo.isCompleted,
-};
+import { selectVisibleTodoIds, selectAllChecked } from '../dux/selectors/todoSelectors';
 
 const TodoList = () => {
 
     const { toggleAllTodos } = useReduxBindActionCreators(listActions);
 
-    const visibleTodoIds = useReduxState(state => {
-        return state.todos.filter(lookupFilter[state.filter]).map(todo => todo.id)
-    }, [], true);
-    const allChecked = useReduxState(state => state.todos.length !== 0 && state.todos.findIndex(item => !item.isCompleted) === -1); 
+    const visibleTodoIds = useReduxState(selectVisibleTodoIds, [], true);
+    const allChecked = useReduxState(selectAllChecked); 
 
     return (
         <section className="main">

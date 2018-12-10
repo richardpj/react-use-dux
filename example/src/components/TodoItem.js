@@ -4,13 +4,14 @@ import { useReduxBindActionCreators, useReduxState } from 'react-use-dux';
 import { useKeypressHandler } from '../hooks/useKeyPressHandler';
 import { useClickOutside } from '../hooks/useClickOutside';
 import { itemActions } from '../dux/actions/todoActions';
+import { createTodoItemSelector, createIsEditingSelector } from '../dux/selectors/todoSelectors';
 
 const TodoItem = memo(({ id }) => {
 
     const { editTodo, removeTodo, toggleTodo, updateTodoText, stopEditingTodo } = useReduxBindActionCreators(itemActions);
 
-    const { text, isCompleted } = useReduxState(state => state.todos[state.todos.findIndex(item => item.id === id)], [id]);
-    const editing = useReduxState(state => state.editing === id, [id]);
+    const { text, isCompleted } = useReduxState(createTodoItemSelector(id), [id]);
+    const editing = useReduxState(createIsEditingSelector(id), [id]);
 
     const textBoxRef = useClickOutside(stopEditingTodo, editing);
 
@@ -30,7 +31,7 @@ const TodoItem = memo(({ id }) => {
     },[editing]);
 
     return (
-        <li {...editing ? { className: 'editing' } : {}}>
+        <li className={ editing ? 'editing' : '' }>
             <div className="view">
                 <input type="checkbox" className="toggle" checked={isCompleted} onChange={ toggleTodoCb } />
                 <label onDoubleClick={editTodoCb}>{text}</label>

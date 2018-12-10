@@ -3,11 +3,12 @@ import React, { useCallback } from 'react';
 import { useReduxState, useReduxBindActionCreators } from 'react-use-dux';
 import { headerActions } from '../dux/actions/todoActions';
 import { useKeypressHandler } from '../hooks/useKeyPressHandler';
+import { selectNewTodoText } from '../dux/selectors/todoSelectors';
 
 const Header = () => {
 
     const { updateNewTodoText, addTodo } = useReduxBindActionCreators(headerActions);
-    const newTodoText = useReduxState(state => state.newTodoText);
+    const newTodoText = useReduxState(selectNewTodoText);
     const textChangeHandler = useCallback(e => updateNewTodoText(e.target.value), [updateNewTodoText]);
     const keypressHandler = useKeypressHandler({
         'Enter': addTodo,
