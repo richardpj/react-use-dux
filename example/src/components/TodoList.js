@@ -9,7 +9,7 @@ const TodoList = () => {
 
     const { toggleAllTodos } = useReduxBindActionCreators(listActions);
 
-    const visibleTodoIds = useReduxState(selectVisibleTodoIds, [], true);
+    const visibleTodoIds = useReduxState(selectVisibleTodoIds);
     const allChecked = useReduxState(selectAllChecked); 
 
     return (

@@ -8,7 +8,7 @@ export const ReduxContext = createContext();
 
 ReduxContext.displayName = 'ReduxContext';
 
-export const useReduxBatchUpdateMiddleware = ({dispatch, getState}) => next => action => {
+export const reduxBatchUpdateMiddleware = ({dispatch, getState}) => next => action => {
     let retVal;
     batchedUpdates(() => retVal = next(action));
     return retVal;
@@ -26,25 +26,23 @@ const useRefState = initialValue => {
     return [state, setState, stateRef];
 };
 
-export const useReduxState = (selector, memoArray = [], useShallowCompare = false) => {
+export const useReduxState = (selector, memoArray = []) => {
 
     const store = useContext(ReduxContext);
-    const memoSelector = useCallback(selector, memoArray);
-    const [state, setState, stateRef] = useRefState(memoSelector(store.getState()));
+    const selectorCb = useCallback(selector, memoArray);
+    const [state, setState, stateRef] = useRefState(selectorCb(store.getState()));
     
     useEffect(() => {
         const unsubscribe = store.subscribe(() => {
-            const newState = memoSelector(store.getState());
-            if(useShallowCompare ? !shallowEqual(stateRef.current, newState) : stateRef.current !== newState) {
+            const newState = selectorCb(store.getState());
+            if(!shallowEqual(stateRef.current, newState)) {
                 setState(newState);
             }
         });
         return unsubscribe;
-    },[store, memoSelector]);
+    },[store, selectorCb]);
     return state;
 };
-
-//const batchedDispatch = useCallback((...args) => batchedUpdates(() => dispatch(...args)), [dispatch]);
 
 export const useReduxDispatch = (fn, memoArray = []) => {
     

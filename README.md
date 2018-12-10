@@ -8,11 +8,12 @@
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [ReduxContext](#reduxcontext)
+  * [ReduxContext and reduxBatchUpdateMiddleware](#reduxcontext-and-reduxbatchupdatemiddleware)
   * [useReduxState](#usereduxstate)
   * [useReduxDispatch](#usereduxdispatch)
   * [useReduxBindActionCreators](#usereduxbindactioncreators)
 * [Example](#example)
+* [Changes](#changes)
 * [Thanks](#thanks)
 * [License](#license)
 
@@ -30,15 +31,15 @@ NOTE: React hooks currently require react and react-dom version 16.7.0-alpha.0 o
 
 In order to use the hooks, your Redux store must be available in the React context from `ReduxContext.Provider`.
 
-### ReduxContext and useReduxBatchUpdateMiddleware
+### ReduxContext and reduxBatchUpdateMiddleware
 
-Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`. Additionally it is recommended that you apply the supplied `useReduxBatchUpdateMiddleware` in order to guarantee that actions that may cause cascading re-renders will be batched into one render. This is due to the way that `react-use-dux` uses the built in state hook under the hood. It is envisioned that this should not cause cascading updates in the future so hopefully this feature can be removed in a later release.
+Before you can use the hook, you must provide your Redux store via `ReduxContext.Provider`. Additionally it is recommended that you apply the supplied `reduxBatchUpdateMiddleware` in order to guarantee that actions that may cause cascading re-renders will be batched into one render. This is due to the way that `react-use-dux` uses the built in state hook under the hood. It is envisioned that this react will prevent these setState cascading updates in the future so hopefully this feature can be removed in a later release.
 
 ```jsx
 import {createStore, compose, applyMiddleware} from 'redux';
-import {ReduxContext, useReduxBatchUpdateMiddleware} from 'react-use-dux';
+import {ReduxContext, reduxBatchUpdateMiddleware} from 'react-use-dux';
 
-const store = createStore(/*...*/,compose(applyMiddleware(/*...*/, useReduxBatchUpdateMiddleware)));
+const store = createStore(/*...*/,compose(applyMiddleware(/*...*/, reduxBatchUpdateMiddleware)));
 
 ReactDOM.render(
   <ReduxContext.Provider value={store}>
@@ -50,9 +51,9 @@ ReactDOM.render(
 
 ### useReduxState
 
-#### `useReduxState(selector = f => f, memoArray = [], useShallowCompare = false)`
+#### `useReduxState(selector = state => state, memoArray = [])`
 
-Runs the given selector function to subscribe to a part of the redux state. Preferably call it for each part of the state to which you subscribe. You may subscribe to several portions of the state using a single selector (not recommended) but you must enable shallow comparison for this to work efficiently.
+Runs the given selector function to subscribe to a part of the redux state. Preferably call it for each part of the state to which you subscribe. You may subscribe to several portions of the state using a single selector (not recommended). Shallow comparison is now supported by default but can be turned off. This option will be removed in a later version as it will probably cause issues.
 
 Your selector will be memoized using the provided memoArray argument. Ensure that all values captured by the selector function are included in the memoArray.
 
@@ -75,7 +76,7 @@ const MyComponent = (props) => {
     );
 };
 ``` 
-It is an antipattern to capture subscribed state values in the selectors of subsequent subscriptions and will cause anomalous behaviour. If you must do it then use a ref but rather avoid it entirely.
+Avoid capture of subscribed state values in the selectors of subsequent subscriptions as this will cause anomalous behaviour.
 
 ```js
 //Avoid...
@@ -84,6 +85,7 @@ const filteredTodos = useReduxState(state => state.todos.filter(filter), [filter
 //Rather...
 const filteredTodos = useReduxState(state => state.todos.filter(state.filter));
 ```
+If you really want to reuse selectors think about adopting a library like [reselect](https://github.com/reduxjs/reselect). If you look at the provided example application you'll see that it includes the use of reselect as well as argument currying to make it more clear when values are captured and should be added to the memoArray.
 
 ### useReduxDispatch
 
@@ -114,7 +116,7 @@ const MyComponent = (props) => {
 
 Either gives an action creator dispatch, or gives an object (preferred) with action creator properties dispatch.
 
-**NOTE:** The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function(s) are included in the memoArray.
+The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function(s) are included in the memoArray.
 
 ```js
 import {useReduxDispatch} from 'react-use-dux';
@@ -146,6 +148,11 @@ yarn start
 cd example
 yarn start
 ```
+## Changes
+
+This API has been evolving rapidly as I've experimented with it and measured the performance and usability of various design choices. It is more stable now and you can adopt it (please no prod deployment until the react team releases hooks!) without fear of breaking changes for now.
+
+That said if you feel strongly about geting it changed you're welcome to raise an issue or pull request.
 
 ## Thanks
 
