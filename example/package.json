@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "react": "^16.7.0-alpha.2",
-    "react-dom": "^16.7.0-alpha.2",
+    "react": "link:../node_modules/react",
+    "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "^1.1.4",
     "react-use-dux": "link:..",
     "redux": "^4.0.1",
