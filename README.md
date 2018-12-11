@@ -114,14 +114,14 @@ Either gives an action creator dispatch, or gives an object (preferred) with act
 
 The output of this method will be memoized using the provided memoArray argument. Ensure that all values captured in your provided function(s) are included in the memoArray.
 ```js
-import {useReduxDispatch} from 'react-use-dux';
+import {useReduxBindActionCreators} from 'react-use-dux';
 import actions from './dux/actions';
 
 const MyComponent = (props) => {
 
-    const doThing1 = useReduxDispatch(actions.doThing1);
+    const doThing1 = useReduxBindActionCreators(actions.doThing1);
     //OR
-    const { doThing1, doThing2 } = useReduxDispatch(actions);
+    const { doThing1, doThing2 } = useReduxBindActionCreators(actions);
 
 
     return (
