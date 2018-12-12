@@ -51,7 +51,7 @@ ReactDOM.render(
 
 ### useReduxState
 
-#### `useReduxState(selector = state => state, memoArray = [])`
+#### `useReduxState(selector, memoArray)`
 
 Runs the given selector function to subscribe to a part of the redux state. Preferably call it for each part of the state to which you subscribe. You may subscribe to several portions of the state using a single selector (not recommended). Shallow comparison is now supported by default but can be turned off. This option will be removed in a later version as it will probably cause issues.
 
@@ -87,7 +87,7 @@ If you really want to reuse selectors think about adopting a library like [resel
 
 ### useReduxDispatch
 
-#### `useReduxDispatch(void | dispatch => any, memoArray = [])`
+#### `useReduxDispatch(void | dispatch => any, memoArray)`
 
 Either returns the dispatch method, or returns the result of executing the provided method.
 
@@ -108,7 +108,7 @@ const MyComponent = (props) => {
 ```
 ### useReduxBindActionCreators
 
-#### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray = [])`
+#### `useReduxBindActionCreators(actionCreator | actionCreatorObject, memoArray)`
 
 Either gives an action creator dispatch, or gives an object (preferred) with action creator properties dispatch.
 

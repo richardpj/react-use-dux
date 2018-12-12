@@ -26,7 +26,7 @@ const useRefState = initialValue => {
     return [state, setState, stateRef];
 };
 
-export const useReduxState = (selector, memoArray = []) => {
+export const useReduxState = (selector, memoArray) => {
 
     const store = useContext(ReduxContext);
     const selectorCb = useCallback(selector, memoArray);
@@ -47,14 +47,14 @@ export const useReduxState = (selector, memoArray = []) => {
     return state;
 };
 
-export const useReduxDispatch = (fn, memoArray = []) => {
+export const useReduxDispatch = (fn, memoArray) => {
     
     const { dispatch } = useContext(ReduxContext);
-    return useMemo(() => fn ? fn(dispatch) : dispatch, [dispatch, ...memoArray]);
+    return useMemo(() => fn ? fn(dispatch) : dispatch, memoArray ? [dispatch, ...memoArray] : [dispatch]);
 };
 
-export const useReduxBindActionCreators = (actionCreators, memoArray = []) => {
+export const useReduxBindActionCreators = (actionCreators, memoArray) => {
 
     const { dispatch } = useContext(ReduxContext);    
-    return useMemo(() => bindActionCreators(actionCreators, dispatch), [dispatch, ...memoArray]);
+    return useMemo(() => bindActionCreators(actionCreators, dispatch), memoArray ? [dispatch, ...memoArray] : [dispatch]);
 };
