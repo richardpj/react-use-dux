@@ -279,7 +279,6 @@ describe('react-use-dux', () => {
         document.body.appendChild(root);
         let render = (component, theStore = store) => ReactDOM.render(<ReduxContext.Provider value={theStore}>{component}</ReduxContext.Provider>, root);
         let getContent = () => root.innerHTML;
-        //let unmount = () => ReactDOM.unmountComponentAtNode(root);
         let teardown = () => document.body.removeChild(root);
         return {
             store,
@@ -520,8 +519,11 @@ describe('react-use-dux', () => {
 
             render(<ActionDispatchComponent />);
 
+            expect(actionCreator.action1).toBeCalledTimes(1);
             expect(actionCreator.action1).toBeCalledWith(action1);
+            expect(actionCreator.action2).toBeCalledTimes(1);
             expect(actionCreator.action2).toBeCalledWith(action2);
+            expect(store.dispatch).toBeCalledTimes(2);
             expect(store.dispatch).toBeCalledWith(action1);
             expect(store.dispatch).toBeCalledWith(action2);
 
