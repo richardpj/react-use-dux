@@ -1,6 +1,6 @@
 {
   "name": "react-use-dux",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "React bindings for Redux using the new React hooks proposal.",
   "keywords": [
     "react",
@@ -48,11 +48,11 @@
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^4.0.0",
+    "gh-pages": "^2.0.1",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.2",
-    "redux": "^4.0.1",
-    "gh-pages": "^2.0.1",
     "react-scripts": "^2.1.1",
+    "redux": "^4.0.1",
     "rollup": "^0.67.4",
     "rollup-plugin-babel": "^4.0.1",
     "rollup-plugin-commonjs": "^9.1.3",
