@@ -30,10 +30,15 @@ export const useReduxState = (selector, memoArray) => {
 
     const store = useContext(ReduxContext);
     const selectorCb = useCallback(selector, memoArray);
-    const newState = selectorCb(store.getState());
-    const [state, setState, stateRef] = useRefState(newState);
-    if(!shallowEqual(state, newState)) {
-        setState(newState); //selector or store changed so update internal state copy.
+    const selectorCbFn = () => selectorCb;
+    const select = () => selectorCb(store.getState());
+    const [state, setState, stateRef] = useRefState(select);
+    const [prevStore, setPrevStore] = useState(store);
+    const [prevSelectorCb, setPrevSelectorCb] = useState(selectorCbFn);
+    if(store !== prevStore || selectorCb !== prevSelectorCb) {
+        setPrevStore(store);
+        setPrevSelectorCb(selectorCbFn);
+        setState(select());
     }
     useEffect(() => {
         const unsubscribe = store.subscribe(() => {
