@@ -140,11 +140,11 @@ yarn start
 
 This API has been evolving rapidly as I've experimented with it and measured the performance and usability of various design choices. It is more stable now and you can adopt it (please no prod deployment until the react team releases hooks!) without fear of breaking changes for now.
 
-That said if you feel strongly about geting it changed (or heaven forfen you've found a bug) you're welcome to raise an [issue](https://github.com/richardpj/react-use-dux/issues) or [pull request](https://github.com/richardpj/react-use-dux/pulls).
+That said if you feel strongly about getting it changed (or heaven forfen you've found a bug) you're welcome to raise an [issue](https://github.com/richardpj/react-use-dux/issues) or [pull request](https://github.com/richardpj/react-use-dux/pulls).
 
 ## Thanks
 
-This project was boostrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) but with a few improvements. Thanks also to [@ianobermiller](https://github.com/ianobermiller) for providing some great feedback leading to some great improvements in version 2.
+This project was bootstrapped using [create-react-library](https://github.com/transitive-bullshit/create-react-library). The code was inspired by the project [redux-react-hook](https://github.com/facebookincubator/redux-react-hook) but with a few improvements. Thanks also to [@ianobermiller](https://github.com/ianobermiller) for providing some great feedback leading to some great improvements in version 2.
 
 ## License
 
